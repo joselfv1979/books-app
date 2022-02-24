@@ -2,9 +2,9 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/server.js",
   "files": [
-    "dist/index.js"
+    "dist/sertver.js"
   ],
   "scripts": {
     "ts": "tsc -w",
