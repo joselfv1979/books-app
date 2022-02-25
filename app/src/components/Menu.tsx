@@ -2,6 +2,7 @@ import React from "react";
 import { useUserContext } from "../context/UserContext";
 import { Link } from "react-router-dom";
 import { BoxArrowRight } from "react-bootstrap-icons";
+import "../scss/menu.module.scss";
 
 const Menu = () => {
   const { user, isAdmin, logout } = useUserContext();

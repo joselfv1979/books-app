@@ -2,8 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { Auth } from "../types/Auth";
-import { Button, Form, Row, Col } from "react-bootstrap";
-import { Cursor } from "react-bootstrap-icons";
+import { Container, Button, Form, Row, Col } from "react-bootstrap";
 
 const Login = () => {
   const { login } = useUserContext();
