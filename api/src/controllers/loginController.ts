@@ -12,25 +12,26 @@ export async function loginController(
 ) {
   try {
     const { username, password } = req.body;
+
     const user = await User.findOne({ username });
 
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(password, user.passwordHash);
 
     if (!user || !passwordCorrect) {
-      next(new CustomError(401, "Invalid credentials"))
+      next(new CustomError(401, "Invalid credentials"));
+      return;
     }
 
-    const token = generateToken(user.id, username, user.role)
+    const token = generateToken(user.id, username, user.role);
 
     res.send({
       id: user.id,
       username,
       role: user.role,
-      token
+      token,
     });
   } catch (error) {
-   // next(new CustomError(500, "Couldn't login user"));
-    console.log(error);  
+    console.log(error);
   }
 }

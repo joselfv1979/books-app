@@ -1,20 +1,16 @@
 import { createContext, useContext } from "react";
-import { Auth } from "../types/Auth";
+import { IUser } from "../types/User";
 
 export type UserContent = {
-  user: Auth | null;
-  setUser: (user: Auth | null) => void;
+  user: IUser | null;
+  setUser: (user: IUser | null) => void;
   isAdmin: boolean;
-  login: (user: Auth) => void;
-  logout: () => void;
 };
 
 const UserContext = createContext<UserContent>({
   user: null,
   setUser: () => null,
   isAdmin: false,
-  login: () => null,
-  logout: () => null,
 });
 
 // context consumer hook

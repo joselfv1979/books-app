@@ -3,10 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { IBook } from "../types/Book";
 import { addBook } from "../redux/actionCreators/book";
 import { useDispatch } from "react-redux";
-import { Button, Form, Row, Col } from "react-bootstrap";
+import { Alert, Button, Form, Row, Col } from "react-bootstrap";
+import Message from "../components/Message";
+import { useTypedSelector } from "../hooks/useTypeSelector";
 
 const Book = () => {
   const dispatch = useDispatch();
+  const { error } = useTypedSelector((state) => state.books);
+
   const navigate = useNavigate();
 
   const initialState: IBook = {
@@ -18,6 +22,7 @@ const Book = () => {
   };
 
   const [values, setValues] = useState(initialState);
+  const [message, setMessage] = useState<string | null>(null);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -28,12 +33,20 @@ const Book = () => {
     console.log({ values });
 
     const resp = await dispatch(addBook(values));
-    if(resp !== undefined) navigate('/books');
-    console.log({ resp });
+    if (error) {
+      console.log('if enetering',{error});
+      
+      setMessage(error);
+      return;
+    }
+
+    navigate("/books");
+
   };
 
   return (
     <Form onSubmit={saveBook}>
+      {error && <Message message={message} setMessage={setMessage} />}
       <h1>New Book</h1>
       <Form.Group as={Row} className="mb-3" controlId="formBasicFullName">
         <Form.Label column sm={3}>

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { getBook } from "../api/books";
 import { IBook } from "../types/Book";
 import { Button, Form, Row, Col } from "react-bootstrap";
+import styles from "../scss/editBook.module.scss"
 
 const BookEdit = () => {
   const { id } = useParams();
@@ -104,9 +105,17 @@ const BookEdit = () => {
         </Col>
       </Form.Group>
 
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
+      <div className={styles.buttonGroup}>
+        <Button
+          variant="primary"
+          type="submit"
+        >
+          Save
+        </Button>
+        <Button variant="danger" onClick={() => navigate("/books")}>
+          Cancel
+        </Button>
+      </div>
     </Form>
   );
 };

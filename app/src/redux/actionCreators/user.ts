@@ -3,7 +3,6 @@ import { ActionType, Action } from "../actionTypes/user";
 import {
   getAllUsers,
   createUser,
-  getUser,
   removeUser,
   updateUser,
 } from "../../api/users";

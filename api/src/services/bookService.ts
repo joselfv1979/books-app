@@ -1,6 +1,5 @@
 import Book, { IBook } from "../models/Book";
 import { ObjectId } from "mongodb";
-import { response } from "express";
 
 export async function getBooksService() {
   try {

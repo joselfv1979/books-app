@@ -1,11 +1,31 @@
 import React from "react";
 import { useUserContext } from "../context/UserContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BoxArrowRight } from "react-bootstrap-icons";
 import "../scss/menu.module.scss";
 
 const Menu = () => {
-  const { user, isAdmin, logout } = useUserContext();
+  const { user, setUser, isAdmin } = useUserContext();
+
+  const storedUser = localStorage.getItem("user"); 
+
+  // const user = storedUser ? JSON.parse(storedUser) : null
+  // console.log('AdminRoute', {user});
+
+  // const isAdmin = user?.role === 'admin' ? true : false;
+
+  const navigate = useNavigate();
+
+  console.log('menu', user);
+
+  console.log('menu_admin', isAdmin);
+  
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
   
   return (
     <ul className="text-white bg-dark">

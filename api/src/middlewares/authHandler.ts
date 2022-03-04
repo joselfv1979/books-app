@@ -1,13 +1,16 @@
 import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from "express";
+import { CustomError } from '../models/CustomError';
 
 export interface AuthRequest extends Request {
     userId: string;
 }
 
-module.exports = (request: AuthRequest, response: Response, next: NextFunction) => {
+const authHandler = (request: AuthRequest, response: Response, next: NextFunction) => {
     
     const authorization = request.get('authorization');
+    console.log({authorization});
+    
     
     let token = '';
 
@@ -20,11 +23,11 @@ module.exports = (request: AuthRequest, response: Response, next: NextFunction) 
     try {
         decodedToken = jwt.verify(token, process.env.SECRET);
     } catch (error) {
-        console.error(error);
+        // console.error(error);
     }
 
     if (!token || !decodedToken) {
-        return response.status(401).json({ error: 'token missing or invalid'});
+        next(new CustomError(401, 'token missing or invalid'));
     }
 
     const { id: userId} = decodedToken;
@@ -34,4 +37,8 @@ module.exports = (request: AuthRequest, response: Response, next: NextFunction) 
     request.userId = userId;
 
     next();
+}
+
+module.exports = {
+    authHandler
 }

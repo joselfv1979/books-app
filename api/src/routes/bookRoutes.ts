@@ -8,14 +8,14 @@ import {
   deleteBookController,
 } from "../controllers/bookController";
 
-const authHandler = require('../middlewares/authHandler');
+const { authHandler } = require('../middlewares/authHandler');
 
 const booksRouter = Router();
 
 booksRouter.get("/", getBooksController);
 booksRouter.get("/:id", getBookController);
-booksRouter.post("/", createBookController);
-booksRouter.put("/:id", updateBookController);
-booksRouter.delete("/:id", deleteBookController);
+booksRouter.post("/", authHandler, createBookController);
+booksRouter.put("/:id", authHandler, updateBookController);
+booksRouter.delete("/:id", authHandler, deleteBookController);
 
 export default booksRouter;
