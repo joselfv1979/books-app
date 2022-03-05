@@ -1,19 +1,11 @@
 import React from "react";
 import { useUserContext } from "../context/UserContext";
-import { Link, useNavigate } from "react-router-dom";
-import { BoxArrowRight } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 import styles from "../scss/menu.module.scss";
+import UserLogMenu from "./UserLogMenu";
 
 const Menu = () => {
-  const { user, setUser, isAdmin } = useUserContext();
-
-  const navigate = useNavigate();
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
+  const { isAdmin } = useUserContext();
 
   return (
     <ul className="text-white bg-dark">
@@ -31,16 +23,9 @@ const Menu = () => {
           <Link to="/newBook">New Book</Link>
         </li>
       )}
-      {user ? (
-        <li className={styles.userSubmenu}>
-          <p>{user.username}</p>
-          <BoxArrowRight className={styles.logoutIcon} onClick={logout} />
-        </li>
-      ) : (
-        <li className={styles.userSubmenu}>
-          <Link to="/login">Login</Link>
-        </li>
-      )}
+      <li className={styles.userSubmenu}>
+        <UserLogMenu />
+      </li>
     </ul>
   );
 };
