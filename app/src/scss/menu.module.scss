@@ -8,3 +8,19 @@ li {
     list-style: none;
     margin: 1rem;
 }
+
+.userSubmenu {
+    margin-left: auto;
+    display: flex;
+
+    p {
+        margin-right: 1rem;
+    }
+
+    .logoutIcon {
+        color:red;
+        cursor: pointer;
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+}
