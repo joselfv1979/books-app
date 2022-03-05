@@ -46,6 +46,9 @@ const bookReducer = (state: State = initialState, action: Action): State => {
 
     case ActionType.UPDATE_BOOK_FAIL:
       return { ...state, error: action.payload };
+
+    case ActionType.REMOVE_BOOK_ERROR:
+      return { ...state, error: null };
     default:
       return state;
   }

@@ -13,6 +13,7 @@ export enum ActionType {
   REMOVE_BOOK_FAIL = "REMOVE_BOOK_FAIL",
   UPDATE_BOOK_SUCCESS = "UPDATE_BOOK_SUCCESS",
   UPDATE_BOOK_FAIL = "UPDATE_BOOK_FAIL",
+  REMOVE_BOOK_ERROR = "REMOVE_BOOK_ERROR",
 }
 
 interface bookActionPending {
@@ -41,8 +42,13 @@ interface bookActionFail {
   payload: string;
 }
 
+interface bookActionErrorCancel {
+  type: ActionType.REMOVE_BOOK_ERROR;
+}
+
 export type Action =
   | bookActionPending
   | booksActionSuccess
   | bookActionSuccess
-  | bookActionFail;
+  | bookActionFail
+  | bookActionErrorCancel;

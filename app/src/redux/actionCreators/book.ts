@@ -41,10 +41,9 @@ export const addBook = (book: IBook) => {
         type: ActionType.ADD_BOOK_SUCCESS,
         payload: data,
       });
-
       return data;
     } catch (err: any) {
-      console.log('action_error',err.response.data);
+      console.log("action_error", err.response.data);
 
       dispatch({
         type: ActionType.ADD_BOOK_FAIL,
@@ -96,3 +95,11 @@ export const editBook = (book: IBook) => {
     }
   };
 };
+
+export const removeBookError = () => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.REMOVE_BOOK_ERROR
+    })
+  }
+}
