@@ -46,7 +46,7 @@ export async function createBookController(
   try {
     const { title, author, price, pages } = req.body;
     console.log({req});
-    if (!title || !author || !price) {
+    if (!title || !author || !price || !pages) {
       next(new CustomError(400, "Bad request"));
       return;
     }
@@ -55,7 +55,7 @@ export async function createBookController(
       title,
       author,
       price,
-      pages: pages ? pages : null,
+      pages
     });
     const book = await createBookService(newBook);
     res.status(201).json(book);
@@ -73,7 +73,7 @@ export async function updateBookController(
     const { id } = req.params;
     const { title, author, price, pages } = req.body;
 
-    if (!title || !author || !price) {
+    if (!title || !author || !price || !pages) {
       next(new CustomError(400, "Bad request"));
       return;
     }

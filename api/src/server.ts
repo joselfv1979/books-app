@@ -26,11 +26,11 @@ app.use(express.urlencoded({ extended: false }));
 createAdminUser();
 
 // Routes
-app.use("/api/login", loginRouter)
+app.use("/api/login", loginRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/books", booksRouter);
 
-// Error handler middleware 
+// Error handler middleware
 app.use(errorHandler);
 
 const PORT: number = parseInt(process.env.PORT as string, 10);
