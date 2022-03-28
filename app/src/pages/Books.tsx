@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import BookList from "../components/BookList";
 import Message from "../components/Message";
 import { IBook } from "../types/Book";
@@ -11,25 +11,24 @@ import styles from "../style.module.scss";
 const Books = () => {
   const dispatch = useDispatch();
 
-  const { books, loading, error } = useTypedSelector((state) => state.books);
+  const { books, status, error } = useTypedSelector((state) => state.books);
 
   useEffect(() => {
-    const getAllBooks = async () => await dispatch(getBooks());
-    
-    getAllBooks();
-  }, []);
+    if (status === "idle") dispatch(getBooks());
+  }, [status, dispatch]);
 
   const removeBook = useCallback(
-    async (book: IBook) => await dispatch(deleteBook(book)),
+    (book: IBook) => dispatch(deleteBook(book)),
     [dispatch, deleteBook]
   );
 
   return (
     <Container>
-      {error && <Message message={error} />}
-      {loading ? (
+      {status === "failed" && <Message message={error} />}
+      {status === "loading" && (
         <Spinner animation="border" className={styles.spinner} />
-      ) : (
+      )}
+      {status === "succeeded" && (
         <BookList books={books} removeBook={removeBook} />
       )}
     </Container>
