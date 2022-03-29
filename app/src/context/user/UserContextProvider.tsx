@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { IUser } from "../types/User";
+import { IUser } from "../../types/User";
 import { UserContext } from "./UserContext";
 
 type Props = {

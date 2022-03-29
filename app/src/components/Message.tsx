@@ -1,15 +1,18 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import { removeBookError } from "../redux/actionCreators/book";
 import { useDispatch } from "react-redux";
 import { Alert } from "react-bootstrap";
+import { useMessageContext } from "../context/message/MessageContext";
 
 type Props = {
   message: string | null;
-  setMessage?: Dispatch<SetStateAction<string | null>>;
 };
 
-const Message = ({ message, setMessage }: Props) => {
+const Message = ({ message }: Props) => {
 
+  console.log("message-message",{message});
+  
+  const { setMessage } = useMessageContext();
   const dispatch = useDispatch();
 
   const cancelMessage = () => {

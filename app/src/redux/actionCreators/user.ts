@@ -5,7 +5,7 @@ import {
   createUser,
   removeUser,
   updateUser,
-} from "../../api/users";
+} from "../../services/users";
 import { IUser } from "../../types/User";
 
 export const getUsers = () => {

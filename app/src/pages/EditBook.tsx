@@ -2,10 +2,11 @@ import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { editBook } from "../redux/actionCreators/book";
 import { useDispatch } from "react-redux";
-import { getBook } from "../api/books";
 import { IBook } from "../types/Book";
 import { Button, Form, Row, Col } from "react-bootstrap";
-import styles from "../scss/editBook.module.scss"
+import styles from "../scss/editBook.module.scss";
+import { getBook } from "../services/books";
+import { useMessageContext } from "../context/message/MessageContext";
 
 const BookEdit = () => {
   const { id } = useParams();
@@ -20,13 +21,18 @@ const BookEdit = () => {
     pages: undefined,
   };
 
+  const { setMessage } = useMessageContext();
+
   useEffect(() => {
     const fetchBook = async () => {
-      const { data } = await getBook(String(id));
-      setValues(data);
+      try {
+        const { data } = await getBook(String(id));
+        setValues(data);
+      } catch (error) {
+        setMessage("Coudn't get Book");
+      }
     };
-
-    fetchBook().catch(console.error);
+    fetchBook();
   }, []);
 
   const [values, setValues] = useState<IBook>(initialState);
@@ -38,8 +44,8 @@ const BookEdit = () => {
   const saveBook = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const updatedBook = await dispatch(editBook(values));
-    
+    const updatedBook = dispatch(editBook(values));
+
     if (updatedBook !== undefined) navigate("/books");
   };
 
@@ -107,10 +113,7 @@ const BookEdit = () => {
       </Form.Group>
 
       <div className={styles.buttonGroup}>
-        <Button
-          variant="primary"
-          type="submit"
-        >
+        <Button variant="primary" type="submit">
           Save
         </Button>
         <Button variant="danger" onClick={() => navigate("/books")}>

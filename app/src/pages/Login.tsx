@@ -1,21 +1,21 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../context/UserContext";
-import { loginUser } from "../api/users";
+import { useUserContext } from "../context/user/UserContext";
+import { useMessageContext } from "../context/message/MessageContext";
+import { loginUser } from "../services/users";
 import { Auth } from "../types/Auth";
 import { Container, Button, Form, Row, Col } from "react-bootstrap";
 import styles from "../scss/login.module.scss";
-import Message from "../components/Message";
 
 const Login = () => {
   const { setUser } = useUserContext();
+  const { setMessage } = useMessageContext();
   const initialState: Auth = {
     username: "",
     password: "",
   };
 
   const [values, setValues] = useState(initialState);
-  const [message, setMessage] = useState<string | null>(null);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -23,34 +23,25 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  async function login(user: Auth) {
+  async function login(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     try {
-      const { data } = await loginUser(user);
+      const { data } = await loginUser(values);
 
       if (data) {
-        console.log({ data });
-
         setUser(data);
         localStorage.setItem("user", JSON.stringify(data));
         navigate("/books");
       }
     } catch (error: any) {
-      console.log('error_login: ',error.response);
       setMessage(error.response.data);
     }
   }
 
-  async function submitCallback(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    login(values);
-  }
-
   return (
     <>
-      <Message message={message} setMessage={setMessage} />
       <Container className={styles.loginContainer}>
-        <Form className={styles.loginForm} onSubmit={submitCallback}>
+        <Form className={styles.loginForm} onSubmit={login}>
           <h1>Login</h1>
           <Form.Group as={Row} className="mb-3" controlId="formBasicUsername">
             <Form.Label column sm={3}>

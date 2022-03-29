@@ -25,7 +25,7 @@ const bookReducer = (state: State = initialState, action: Action): State => {
         error: null,
       };
     case ActionType.GET_BOOKS_FAIL:
-      return { books: [], status: "failed", error: action.payload };
+      return { ...state, books: [], status: "failed", error: action.payload };
     case ActionType.ADD_BOOK_SUCCESS:
       return {
         ...state,
@@ -46,7 +46,12 @@ const bookReducer = (state: State = initialState, action: Action): State => {
       };
 
     case ActionType.REMOVE_BOOK_FAIL:
-      return { ...state, books: state.books, status: "failed", error: action.payload };
+      return {
+        ...state,
+        books: state.books,
+        status: "failed",
+        error: action.payload,
+      };
 
     case ActionType.UPDATE_BOOK_SUCCESS:
       return {

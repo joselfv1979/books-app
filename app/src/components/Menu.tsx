@@ -1,5 +1,5 @@
 import React from "react";
-import { useUserContext } from "../context/UserContext";
+import { useUserContext } from "../context/user/UserContext";
 import { Link } from "react-router-dom";
 import styles from "../scss/menu.module.scss";
 import UserLogMenu from "./UserLogMenu";

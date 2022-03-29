@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { IBook } from "../types/Book";
-import { getBook } from "../api/books";
 import { Container, Card, Breadcrumb } from "react-bootstrap";
 import styles from "../scss/book.module.scss";
 import { ArrowLeftSquareFill } from "react-bootstrap-icons";
+import { useTypedSelector } from "../hooks/useTypeSelector";
+import { getBook } from "../services/books";
+import { useMessageContext } from "../context/message/MessageContext";
 
 const Book = () => {
   const { id } = useParams();
-
   const navigate = useNavigate();
 
   const [book, setBook] = useState<IBook>();
 
+  const { setMessage } = useMessageContext();
+
   useEffect(() => {
     const fetchBook = async () => {
-      const { data } = await getBook(String(id));
-      setBook(data);
+      try {
+        const { data } = await getBook(String(id));
+        setBook(data);
+      } catch (error) {
+        setMessage("Coudn't get Book");
+      }
     };
-
-    fetchBook().catch(console.error);
+    fetchBook();
   }, []);
+  
 
   return (
     <Container>

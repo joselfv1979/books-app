@@ -12,11 +12,24 @@ import Book from "./pages/Book";
 import About from "./pages/About";
 import "./style.module.scss";
 import NotFound from "./pages/NotFound";
+import { useTypedSelector } from "./hooks/useTypeSelector";
+import Message from "./components/Message";
+import { Spinner } from "react-bootstrap";
+import styles from "./style.module.scss";
+import { useMessageContext } from "./context/message/MessageContext";
 
-function App() {
+const App = () => {
+  const { status, error } = useTypedSelector((state) => state.books);
+  const { message } = useMessageContext();
+  const notification = message || error;
+
   return (
     <div className="app">
       <Menu />
+      {status === "loading" && (
+        <Spinner animation="border" className={styles.spinner} />
+      )}
+      {notification && <Message message={notification} />}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -46,6 +59,6 @@ function App() {
       </main>
     </div>
   );
-}
+};
 
 export default App;

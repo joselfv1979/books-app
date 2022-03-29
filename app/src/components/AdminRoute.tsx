@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useUserContext } from "../context/UserContext";
+import { useUserContext } from "../context/user/UserContext";
 
 type Props = {
   children: JSX.Element;

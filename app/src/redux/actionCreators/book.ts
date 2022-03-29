@@ -2,10 +2,11 @@ import { Dispatch } from "redux";
 import { ActionType, Action } from "../actionTypes/book";
 import {
   getAllBooks,
+  getBook,
   createBook,
   removeBook,
   updateBook,
-} from "../../api/books";
+} from "../../services/books";
 import { IBook } from "../../types/Book";
 
 export const getBooks = () => {
