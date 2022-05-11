@@ -1,7 +1,9 @@
 ul {
     display: flex;
+    align-items: center;
     height: 10vh;
     padding-right: 2rem;
+    margin: 0;
 }
 
 li {
@@ -12,15 +14,16 @@ li {
 .userSubmenu {
     margin-left: auto;
     display: flex;
-
-    p {
-        margin-right: 1rem;
-    }
+    align-items: center;
 
     .logoutIcon {
-        color:red;
+        color: red;
         cursor: pointer;
         height: 1.5rem;
         width: 1.5rem;
+    }
+
+    .username {
+        margin-right: 1rem;
     }
 }

@@ -1,106 +1,92 @@
-import { Dispatch } from "redux";
-import { ActionType, Action } from "../actionTypes/book";
-import {
-  getAllBooks,
-  getBook,
-  createBook,
-  removeBook,
-  updateBook,
-} from "../../services/books";
-import { IBook } from "../../types/Book";
+import { Dispatch } from 'redux';
+import { ActionType, BookAction } from '../actionTypes/book';
+import { getAllBooks, createBook, removeBook, updateBook } from '../../services/books';
+import { IBook } from '../../types/Book';
 
 export const getBooks = () => {
-  return async (dispatch: Dispatch<Action>) => {
-    dispatch({
-      type: ActionType.GET_BOOKS_PENDING,
-    });
-
-    try {
-      const { data } = await getAllBooks();
-
-      setTimeout(() => {
+    return async (dispatch: Dispatch<BookAction>) => {
         dispatch({
-          type: ActionType.GET_BOOKS_SUCCESS,
-          payload: data,
+            type: ActionType.GET_BOOKS_PENDING,
         });
-      }, 500);
-    } catch (err: any) {
-      dispatch({
-        type: ActionType.GET_BOOKS_FAIL,
-        payload: err.message,
-      });
-    }
-  };
+
+        const res = await getAllBooks();
+
+        res.success
+            ? dispatch({
+                  type: ActionType.GET_BOOKS_SUCCESS,
+                  payload: res.value,
+              })
+            : dispatch({
+                  type: ActionType.GET_BOOKS_FAIL,
+                  payload: res.message,
+              });
+    };
 };
 
 export const addBook = (book: IBook) => {
-  return async (dispatch: Dispatch<Action>) => {
-    try {
-      const { data } = await createBook(book);
+    return async (dispatch: Dispatch<BookAction>) => {
+        const res = await createBook(book);
 
-      dispatch({
-        type: ActionType.ADD_BOOK_SUCCESS,
-        payload: data,
-      });
-      return data;
-    } catch (err: any) {
-      console.log("action_error", err.response.data);
-
-      dispatch({
-        type: ActionType.ADD_BOOK_FAIL,
-        payload: err.response.data,
-      });
-    }
-  };
+        res.success
+            ? dispatch({
+                  type: ActionType.ADD_BOOK_SUCCESS,
+                  payload: res.value,
+              })
+            : dispatch({
+                  type: ActionType.ADD_BOOK_FAIL,
+                  payload: res.message,
+              });
+        return res.success;
+    };
 };
 
 export const deleteBook = (book: IBook) => {
-  return async (dispatch: Dispatch<Action>) => {
-    try {
-      const { data } = await removeBook(book.id);
+    return async (dispatch: Dispatch<BookAction>) => {
+        const res = await removeBook(book.id);
 
-      dispatch({
-        type: ActionType.REMOVE_BOOK_SUCCESS,
-        payload: book,
-      });
-      return data;
-    } catch (err: any) {
-      dispatch({
-        type: ActionType.REMOVE_BOOK_FAIL,
-        payload: err.message,
-      });
-    }
-  };
+        if (res.success) {
+            dispatch({
+                type: ActionType.REMOVE_BOOK_SUCCESS,
+                payload: book,
+            });
+            return true;
+        } else {
+            dispatch({
+                type: ActionType.REMOVE_BOOK_FAIL,
+                payload: res.message,
+            });
+            return false;
+        }
+    };
 };
 
 export const editBook = (book: IBook) => {
-  return async (dispatch: Dispatch<Action>) => {
-    try {
-      const { data } = await updateBook(book);
+    return async (dispatch: Dispatch<BookAction>) => {
+        const res = await updateBook(book);
+        res.success
+            ? dispatch({
+                  type: ActionType.UPDATE_BOOK_SUCCESS,
+                  payload: res.value,
+              })
+            : dispatch({
+                  type: ActionType.UPDATE_BOOK_FAIL,
+                  payload: res.message,
+              });
+    };
+};
 
-      dispatch({
-        type: ActionType.UPDATE_BOOK_SUCCESS,
-        payload: data,
-      });
-      return data;
-    } catch (err: any) {
-      err.message =
-        err.response.status === 400
-          ? "Please fill out all fields"
-          : "Couldn't update book";
-      dispatch({
-        type: ActionType.UPDATE_BOOK_FAIL,
-        payload: err.message,
-      });
-      console.log("redux", err.response);
-    }
-  };
+export const resetBooks = () => {
+    return (dispatch: Dispatch<BookAction>) => {
+        dispatch({
+            type: ActionType.RESET_BOOKS,
+        });
+    };
 };
 
 export const removeBookError = () => {
-  return (dispatch: Dispatch<Action>) => {
-    dispatch({
-      type: ActionType.REMOVE_BOOK_ERROR
-    })
-  }
-}
+    return (dispatch: Dispatch<BookAction>) => {
+        dispatch({
+            type: ActionType.REMOVE_BOOK_ERROR,
+        });
+    };
+};

@@ -10,8 +10,6 @@ export const errorHandler = (
   console.log("Error handling middleware called.");
   // For unhandled errors.
   if (err instanceof CustomError) {
-    console.log("Errr",{err});
-    
     res.status(err.status).send(err.message);
   } else {
     res.status(500).send("Something went wrong");

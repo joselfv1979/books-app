@@ -4,7 +4,7 @@ import userReducer from './user';
 
 const reducers = combineReducers({
     books: bookReducer,
-    users: userReducer
+    users: userReducer,
 });
 
 export default reducers;

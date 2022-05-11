@@ -1,40 +1,29 @@
-import React from "react";
-import { removeBookError } from "../redux/actionCreators/book";
-import { useDispatch } from "react-redux";
-import { Alert } from "react-bootstrap";
-import { useMessageContext } from "../context/message/MessageContext";
+import React from 'react';
+import { Alert } from 'react-bootstrap';
 
 type Props = {
-  message: string | null;
+    fail: string | null;
+    success?: string | null;
+    cancelMessage: () => void;
 };
 
-const Message = ({ message }: Props) => {
+const Message = ({ fail, success, cancelMessage }: Props) => {
+    const variant = fail ? 'danger' : 'success';
 
-  console.log("message-message",{message});
-  
-  const { setMessage } = useMessageContext();
-  const dispatch = useDispatch();
-
-  const cancelMessage = () => {
-    dispatch(removeBookError());
-    if(setMessage) setMessage(null)
-  }
-  
-  return (
-    <Alert
-      variant="danger"
-      style={{
-        visibility: message ? "visible" : "hidden",
-        height: "4rem",
-        margin: 0,
-        textAlign: "center",
-      }}
-      onClose={cancelMessage}
-      dismissible
-    >
-      {message}
-    </Alert>
-  );
+    return (
+        <Alert
+            variant={variant}
+            style={{
+                height: '4rem',
+                width: '100%',
+                textAlign: 'center',
+            }}
+            onClose={cancelMessage}
+            dismissible
+        >
+            {fail || success}
+        </Alert>
+    );
 };
 
 export default Message;

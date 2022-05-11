@@ -45,22 +45,20 @@ export async function createUserController(
   next: NextFunction
 ) {
   try {
-    const { fullName, username, email, password } = req.body;
+    const { fullname, username, email, password, roles } = req.body;
 
-    console.log(req.body);
-
-    if (!fullName || !username || !email || !password) {
+    if (!fullname || !username || !email || !password || !roles) {
       next(new CustomError(400, "Bad request"));
     }
 
     const SaltRounds = 10;
     const passwordHash = await bcrypt.hash(password, SaltRounds);
     const newuser: IUser = new User({
-      fullName,
+      fullname,
       username,
       email,
       passwordHash,
-      role: "user",
+      roles,
     });
     const response = await createUserService(newuser);
     res.status(201).json(response);

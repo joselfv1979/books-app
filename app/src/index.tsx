@@ -1,26 +1,23 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import { store } from "./redux/store";
-import { Provider } from "react-redux";
-import { UserContextProvider } from "./context/user/UserContextProvider";
-import { MessageContextProvider } from "./context/message/MessageContextProvider";
-import "bootstrap/dist/css/bootstrap.min.css";
-import App from "./App";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
+import { UserContextProvider } from './context/user/UserContextProvider';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import App from './App';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <MessageContextProvider>
-          <UserContextProvider>
-            <App />
-          </UserContextProvider>
-        </MessageContextProvider>
-      </Provider>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
+    <React.StrictMode>
+        <BrowserRouter>
+            <Provider store={store}>
+                <UserContextProvider>
+                    <App />
+                </UserContextProvider>
+            </Provider>
+        </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

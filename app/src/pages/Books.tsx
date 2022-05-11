@@ -1,32 +1,46 @@
-import React, { useCallback, useEffect } from "react";
-import BookList from "../components/BookList";
-import { IBook } from "../types/Book";
-import { getBooks, deleteBook } from "../redux/actionCreators/book";
-import { useDispatch } from "react-redux";
-import { useTypedSelector } from "../hooks/useTypeSelector";
-import { Container } from "react-bootstrap";
+import React, { useCallback, useEffect, useState } from 'react';
+import BookList from '../components/BookList';
+import { IBook } from '../types/Book';
+import { getBooks, deleteBook, removeBookError } from '../redux/actionCreators/book';
+import { useDispatch } from 'react-redux';
+import { useTypedSelector } from '../hooks/useTypeSelector';
+import { Container } from 'react-bootstrap';
+import Message from '../components/Message';
 
 const Books = () => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const { books, status } = useTypedSelector((state) => state.books);
+    const { books, status, error } = useTypedSelector((state) => state.books);
 
-  useEffect(() => {
-    if (status === "idle") dispatch(getBooks());
-  }, [status, dispatch]);
+    const [success, setSuccess] = useState<string | null>(null);
 
-  const removeBook = useCallback(
-    (book: IBook) => dispatch(deleteBook(book)),
-    [dispatch, deleteBook]
-  );
+    const message = error || success;
 
-  return (
-    <Container>
-      {status === "succeeded" && (
-        <BookList books={books} removeBook={removeBook} />
-      )}
-    </Container>
-  );
+    useEffect(() => {
+        if (status === 'idle') dispatch(getBooks());
+    }, [status, dispatch]);
+
+    const removeBook = useCallback(
+        (book: IBook) => {
+            if (dispatch(deleteBook(book))) setSuccess('Book deleted successfully');
+            setTimeout(() => {
+                setSuccess(null);
+            }, 2000);
+        },
+        [dispatch, deleteBook],
+    );
+
+    const cancelMessage = () => {
+        if (error) dispatch(removeBookError());
+        if (success) setSuccess(null);
+    };
+
+    return (
+        <Container>
+            {message && <Message fail={error} success={success} cancelMessage={cancelMessage} />}
+            {books && <BookList books={books} removeBook={removeBook} />}
+        </Container>
+    );
 };
 
 export default Books;

@@ -1,44 +1,46 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
-import { CustomError } from '../models/CustomError';
+import { CustomError } from "../models/CustomError";
 
 export interface AuthRequest extends Request {
-    userId: string;
+  userId: string;
 }
 
-const authHandler = (request: AuthRequest, response: Response, next: NextFunction) => {
-    
-    const authorization = request.get('authorization');
-    console.log({authorization});
-    
-    
-    let token = '';
+const authHandler = (
+  request: AuthRequest,
+  response: Response,
+  next: NextFunction
+) => {
+  const authorization = request.get("authorization");
+  console.log({ authorization });
 
-    if (authorization && authorization.toLowerCase().startsWith('bearer')) {
-        token = authorization.substring(7)
-    }
+  let token = "";
 
-    let decodedToken;
+  if (authorization && authorization.toLowerCase().startsWith("bearer")) {
+    token = authorization.substring(7);
+  }
 
-    try {
-        decodedToken = jwt.verify(token, process.env.SECRET);
-    } catch (error) {
-        // console.error(error);
-    }
+  let decodedToken;
 
-    if (!token || !decodedToken) {
-        next(new CustomError(401, 'token missing or invalid'));
-    }
+  try {
+    decodedToken = jwt.verify(token, process.env.SECRET);
+  } catch (error) {
+    // console.error(error);
+  }
 
-    const { id: userId} = decodedToken;
+  if (!token || !decodedToken) {
+    next(new CustomError(401, "token missing or invalid"));
+  }
 
-    console.log('auth', userId);
-    
-    request.userId = userId;
+  const { id: userId } = decodedToken;
 
-    next();
-}
+  console.log("auth", userId);
+
+  request.userId = userId;
+
+  next();
+};
 
 module.exports = {
-    authHandler
-}
+  authHandler,
+};

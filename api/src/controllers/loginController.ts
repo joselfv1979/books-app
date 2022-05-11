@@ -23,12 +23,12 @@ export async function loginController(
       return;
     }
 
-    const token = generateToken(user.id, username, user.role);
+    const token = generateToken(user.id, username, JSON.stringify(user.roles));
 
     res.send({
       id: user.id,
       username,
-      role: user.role,
+      roles: user.roles,
       token,
     });
   } catch (error) {

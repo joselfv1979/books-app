@@ -1,91 +1,43 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../context/user/UserContext";
-import { useMessageContext } from "../context/message/MessageContext";
-import { loginUser } from "../services/users";
-import { Auth } from "../types/Auth";
-import { Container, Button, Form, Row, Col } from "react-bootstrap";
-import styles from "../scss/login.module.scss";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUserContext } from '../context/user/UserContext';
+import { loginUser } from '../services/users';
+import LoginForm from '../components/LoginForm';
+import { Auth } from '../types/Auth';
+import { Container } from 'react-bootstrap';
+import styles from '../scss/login.module.scss';
+import Message from '../components/Message';
 
 const Login = () => {
-  const { setUser } = useUserContext();
-  const { setMessage } = useMessageContext();
-  const initialState: Auth = {
-    username: "",
-    password: "",
-  };
+    const { setUser } = useUserContext();
 
-  const [values, setValues] = useState(initialState);
+    const [fail, setFail] = useState<string | null>(null);
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
+    const navigate = useNavigate();
 
-  const navigate = useNavigate();
+    const login = async (userData: Auth) => {
+        const res = await loginUser(userData);
+        if (res.success) {
+            setUser(res.value);
+            localStorage.setItem('user', JSON.stringify(res.value));
+            navigate('/books');
+        } else {
+            setFail(res.message);
+        }
+    };
 
-  async function login(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    try {
-      const { data } = await loginUser(values);
+    const cancelMessage = () => {
+        setFail(null);
+    };
 
-      if (data) {
-        setUser(data);
-        localStorage.setItem("user", JSON.stringify(data));
-        navigate("/books");
-      }
-    } catch (error: any) {
-      setMessage(error.response.data);
-    }
-  }
-
-  return (
-    <>
-      <Container className={styles.loginContainer}>
-        <Form className={styles.loginForm} onSubmit={login}>
-          <h1>Login</h1>
-          <Form.Group as={Row} className="mb-3" controlId="formBasicUsername">
-            <Form.Label column sm={3}>
-              Username
-            </Form.Label>
-            <Col sm={7}>
-              <Form.Control
-                name="username"
-                type="text"
-                placeholder="Enter username"
-                onChange={onChange}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
-            <Form.Label column sm={3}>
-              Password
-            </Form.Label>
-            <Col sm={7}>
-              <Form.Control
-                name="password"
-                type="password"
-                placeholder="Password"
-                onChange={onChange}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group>
-            <Row>
-              <span
-                style={{ color: "#0d6efd", cursor: "pointer" }}
-                onClick={() => navigate("/register")}
-              >
-                Create an account
-              </span>
-            </Row>
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
-      </Container>
-    </>
-  );
+    return (
+        <>
+            <Container className={styles.loginContainer}>
+                {fail && <Message fail={fail} cancelMessage={cancelMessage} />}
+                <LoginForm login={login} />
+            </Container>
+        </>
+    );
 };
 
 export default Login;

@@ -1,15 +1,16 @@
 h1 {
     text-align: center;
-}
-
-ul {
-    margin: 0;
+    margin: 1rem;
 }
 
 .bookCard {
-    cursor: pointer;
-    width: 18rem;
+    max-width: 20rem;
     margin: 1rem;
+}
+
+.bookImage {
+    border-bottom-left-radius: 0%;
+    border-bottom-right-radius: 0%;
 }
 
 .buttonGroup {

@@ -45,7 +45,7 @@ export async function createBookController(
 ) {
   try {
     const { title, author, price, pages } = req.body;
-    console.log({req});
+
     if (!title || !author || !price || !pages) {
       next(new CustomError(400, "Bad request"));
       return;
@@ -55,7 +55,7 @@ export async function createBookController(
       title,
       author,
       price,
-      pages
+      pages,
     });
     const book = await createBookService(newBook);
     res.status(201).json(book);
@@ -78,6 +78,7 @@ export async function updateBookController(
       return;
     }
     const book = await updateBookService(new ObjectId(id), req.body);
+
     res.status(201).json(book);
   } catch (error) {
     next(new CustomError(500, "Couldn't update book"));
@@ -90,9 +91,7 @@ export async function deleteBookController(
   next: NextFunction
 ) {
   try {
-    
     const { id } = req.params;
-
     await deleteBookService(new ObjectId(id));
     // res.status(200).json({ message: "Book deleted" });
     res.status(204).end();

@@ -2,10 +2,21 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
 .loginForm {
+    margin: auto;
     width: 30rem;
+}
+
+.accountText {
+    color: #0d6efd;
+    cursor: pointer;
+    margin: auto;
+}
+
+.loginButton {
+    margin: 1rem auto;
+    width: 5rem;
 }
