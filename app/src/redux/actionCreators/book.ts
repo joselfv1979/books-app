@@ -20,6 +20,7 @@ export const getBooks = () => {
                   type: ActionType.GET_BOOKS_FAIL,
                   payload: res.message,
               });
+        return res.success;
     };
 };
 
@@ -49,14 +50,13 @@ export const deleteBook = (book: IBook) => {
                 type: ActionType.REMOVE_BOOK_SUCCESS,
                 payload: book,
             });
-            return true;
         } else {
             dispatch({
                 type: ActionType.REMOVE_BOOK_FAIL,
                 payload: res.message,
             });
-            return false;
         }
+        return res.success;
     };
 };
 
@@ -72,6 +72,7 @@ export const editBook = (book: IBook) => {
                   type: ActionType.UPDATE_BOOK_FAIL,
                   payload: res.message,
               });
+        return res.success;
     };
 };
 

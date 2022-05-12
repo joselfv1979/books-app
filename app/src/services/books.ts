@@ -47,6 +47,8 @@ export const removeBook = async (id: string): Promise<Result<IBook>> => {
 export const updateBook = async (book: IBook): Promise<Result<IBook>> => {
     try {
         const { data } = await axios.put(`${baseUrl}/${book.id}`, book, { headers: token });
+        console.log('updated-book:   ', data);
+
         return { success: true, value: data };
     } catch (error) {
         return handleError(error);

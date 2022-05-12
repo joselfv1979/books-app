@@ -4,13 +4,14 @@ import { IBook } from '../types/Book';
 import { Card, Button } from 'react-bootstrap';
 import { useUserContext } from '../context/user/UserContext';
 import styles from '../scss/bookList.module.scss';
+import library from './../assets/library.jpg';
 
 type Props = {
     book: IBook;
     removeBook: (book: IBook) => void;
 };
 
-const Book = ({ book, removeBook }: Props) => {
+const BookCard = ({ book, removeBook }: Props) => {
     const { user } = useUserContext();
     const isAdmin = user?.username === 'admin' ? true : false;
 
@@ -18,7 +19,7 @@ const Book = ({ book, removeBook }: Props) => {
 
     return (
         <Card className={styles.bookCard}>
-            <Card.Img src="./library.jpg" className={styles.bookImage} />
+            <Card.Img src={library} className={styles.bookImage} />
             <Card.Header>{book.author}</Card.Header>
             <Card.Body>
                 <Card.Title>{book.title}</Card.Title>
@@ -44,4 +45,4 @@ const Book = ({ book, removeBook }: Props) => {
     );
 };
 
-export default Book;
+export default BookCard;

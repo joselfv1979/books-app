@@ -7,7 +7,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import styles from '../scss/editBook.module.scss';
 import { getBook } from '../services/books';
 import { useTypedSelector } from '../hooks/useTypeSelector';
-import { useValidateBook } from '../hooks/useValidateError';
+import { useValidateBook } from '../hooks/useValidateBook';
 import Message from '../components/Message';
 
 const BookEdit = () => {
@@ -56,7 +56,7 @@ const BookEdit = () => {
     };
 
     const saveBook = async () => {
-        if (dispatch(editBook(values))) {
+        if (await dispatch(editBook(values))) {
             setSuccess('Book updated successfully');
             setTimeout(() => {
                 setSuccess(null);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { IBook } from '../types/Book';
-import Book from './Book';
+import BookCard from './BookCard';
 import { Row, Col } from 'react-bootstrap';
 
 type Props = {
@@ -17,7 +17,7 @@ const BookList = ({ books, removeBook }: Props) => {
                     books.map((book, i) => {
                         return (
                             <Col key={i} sm={4}>
-                                <Book book={book} removeBook={removeBook} />
+                                <BookCard book={book} removeBook={removeBook} />
                             </Col>
                         );
                     })

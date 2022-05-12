@@ -6,7 +6,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import styles from './../scss/bookForm.module.scss';
 import Message from '../components/Message';
 import { useTypedSelector } from '../hooks/useTypeSelector';
-import { useValidateBook } from '../hooks/useValidateError';
+import { useValidateBook } from '../hooks/useValidateBook';
 
 const AddBook = () => {
     const { error } = useTypedSelector((state) => state.books);
