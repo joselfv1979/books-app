@@ -20,6 +20,22 @@ export async function getUserService(id: ObjectId) {
   }
 }
 
+export async function checkUsernameService(username: string) {
+  try {
+    return await User.findOne({ username: username });
+  } catch (error) {
+    throw Error(error);
+  }
+}
+
+export async function checkEmailService(email: string) {
+  try {
+    return await User.findOne({ email: email });
+  } catch (error) {
+    throw Error(error);
+  }
+}
+
 export async function createUserService(user: IUser) {
   try {
     const savedUser = await user.save();

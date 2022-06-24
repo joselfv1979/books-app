@@ -7,6 +7,8 @@ import bcrypt from "bcrypt";
 import {
   getUserService,
   getUsersService,
+  checkUsernameService,
+  checkEmailService,
   createUserService,
   updateUserService,
   deleteUserService,
@@ -51,6 +53,18 @@ export async function createUserController(
       next(new CustomError(400, "Bad request"));
     }
 
+    const usernameExists = await checkUsernameService(username);
+
+    if (usernameExists) {
+      next(new CustomError(409, "Username already exists"));
+    }
+
+    const emailExists = await checkEmailService(email);
+
+    if (emailExists) {
+      next(new CustomError(409, "Email address already exists"));
+    }
+
     const SaltRounds = 10;
     const passwordHash = await bcrypt.hash(password, SaltRounds);
     const newuser: IUser = new User({
@@ -60,6 +74,7 @@ export async function createUserController(
       passwordHash,
       roles,
     });
+
     const response = await createUserService(newuser);
     res.status(201).json(response);
   } catch (error) {

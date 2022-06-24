@@ -14,7 +14,7 @@ const BookEdit = () => {
     const { id } = useParams();
 
     const { error } = useTypedSelector((state) => state.books);
-    const { validateError, setValidateError, validateBook } = useValidateBook();
+    const [validateError, setValidateError, validateBook] = useValidateBook();
     const fail = error || validateError;
 
     const [success, setSuccess] = useState<string | null>(null);

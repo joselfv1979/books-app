@@ -23,5 +23,5 @@ export const useValidateBook = () => {
         }
         return true;
     };
-    return { validateError, setValidateError, validateBook };
+    return [validateError, setValidateError, validateBook] as const;
 };
