@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import { ActionType, BookAction } from '../actionTypes/book';
 import { getAllBooks, createBook, removeBook, updateBook } from '../../services/books';
 import { IBook } from '../../types/Book';
+import { validateBook } from '../../utils/validateBook';
 
 export const getBooks = () => {
     return async (dispatch: Dispatch<BookAction>) => {
@@ -26,6 +27,16 @@ export const getBooks = () => {
 
 export const addBook = (book: IBook) => {
     return async (dispatch: Dispatch<BookAction>) => {
+        const validBook = validateBook(book);
+
+        if (!validBook.success) {
+            dispatch({
+                type: ActionType.ADD_BOOK_FAIL,
+                payload: validBook.message,
+            });
+            return;
+        }
+
         const res = await createBook(book);
 
         res.success
@@ -62,6 +73,16 @@ export const deleteBook = (book: IBook) => {
 
 export const editBook = (book: IBook) => {
     return async (dispatch: Dispatch<BookAction>) => {
+        const validBook = validateBook(book);
+
+        if (!validBook.success) {
+            dispatch({
+                type: ActionType.ADD_BOOK_FAIL,
+                payload: validBook.message,
+            });
+            return;
+        }
+
         const res = await updateBook(book);
         res.success
             ? dispatch({

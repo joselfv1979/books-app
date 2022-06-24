@@ -6,25 +6,13 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import styles from './../scss/bookForm.module.scss';
 import Message from '../components/Message';
 import { useTypedSelector } from '../hooks/useTypeSelector';
-import { useValidateBook } from '../hooks/useValidateBook';
 
 const AddBook = () => {
     const { error } = useTypedSelector((state) => state.books);
-    const [validateError, setValidateError, validateBook] = useValidateBook();
-    const fail = error || validateError;
-
     const [success, setSuccess] = useState<string | null>(null);
-    const message = fail || success;
+    const message = error || success;
 
     const dispatch = useDispatch();
-
-    const cancelMessage = () => {
-        if (validateError) setValidateError(null);
-        if (error) dispatch(removeBookError());
-        if (success) {
-            setSuccess(null);
-        }
-    };
 
     const initialState: IBook = {
         id: '',
@@ -42,10 +30,6 @@ const AddBook = () => {
 
     const submit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        if (!validateBook(values)) {
-            return;
-        }
         saveBook();
     };
 
@@ -59,9 +43,16 @@ const AddBook = () => {
         }
     };
 
+    const cancelMessage = () => {
+        if (error) dispatch(removeBookError());
+        if (success) {
+            setSuccess(null);
+        }
+    };
+
     return (
         <>
-            {message && <Message fail={fail} success={success} cancelMessage={cancelMessage} />}
+            {message && <Message fail={error} success={success} cancelMessage={cancelMessage} />}
             <Form className={styles.bookForm} onSubmit={submit}>
                 <h1>New Book</h1>
                 <Form.Group as={Row} className="mb-4" controlId="formBasicFullName">

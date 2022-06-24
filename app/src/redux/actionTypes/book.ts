@@ -38,7 +38,7 @@ interface bookActionFail {
         | ActionType.ADD_BOOK_FAIL
         | ActionType.REMOVE_BOOK_FAIL
         | ActionType.UPDATE_BOOK_FAIL;
-    payload: string;
+    payload: string | null;
 }
 
 interface bookActionErrorCancel {
