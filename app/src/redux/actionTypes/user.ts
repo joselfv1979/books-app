@@ -33,7 +33,7 @@ interface userActionFail {
         | ActionType.ADD_USER_FAIL
         | ActionType.REMOVE_USER_FAIL
         | ActionType.UPDATE_USER_FAIL;
-    payload: string;
+    payload: string | null;
 }
 
 interface userActionErrorCancel {

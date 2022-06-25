@@ -1,0 +1,13 @@
+.userCard {
+    max-width: 18rem;
+    margin: 1rem;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: space-around;
+
+    button {
+        width: 5rem;
+    }
+}

@@ -7,17 +7,13 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import styles from '../scss/userForm.module.scss';
 import { useTypedSelector } from '../hooks/useTypeSelector';
 import Message from '../components/Message';
-import { useValidateUser } from '../hooks/useValidateUser';
 
 const User = () => {
     const { error } = useTypedSelector((state) => state.users);
-    const [validateError, setValidateError, validateUser] = useValidateUser();
-
-    const fail = error || validateError;
 
     const [success, setSuccess] = useState<string | null>(null);
 
-    const message = fail || success;
+    const message = error || success;
 
     const dispatch = useDispatch();
 
@@ -33,27 +29,25 @@ const User = () => {
     const [values, setValues] = useState(initialState);
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault();
         setValues({ ...values, [event.target.name]: event.target.value });
     };
 
     async function submitCallback(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        if (!validateUser(values)) {
-            return;
-        }
         saveUser();
     }
 
     const saveUser = async () => {
         if (await dispatch(addUser(values))) {
             setSuccess('User registered successfully');
-            setValues(initialState);
+            setTimeout(() => {
+                setSuccess(null);
+                setValues(initialState);
+            }, 2000);
         }
     };
 
     const cancelMessage = () => {
-        if (validateError) setValidateError(null);
         if (error) dispatch(removeUserError());
         if (success) setSuccess(null);
     };
@@ -62,7 +56,7 @@ const User = () => {
 
     return (
         <>
-            {message && <Message fail={fail} success={success} cancelMessage={cancelMessage} />}
+            {message && <Message fail={error} success={success} cancelMessage={cancelMessage} />}
             <Form className={styles.userForm} onSubmit={submitCallback} data-testid="user-form">
                 <h1>Register</h1>
                 <Form.Group as={Row} className="mb-3" controlId="formBasicFullname">

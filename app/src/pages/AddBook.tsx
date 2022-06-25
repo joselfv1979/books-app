@@ -45,9 +45,7 @@ const AddBook = () => {
 
     const cancelMessage = () => {
         if (error) dispatch(removeBookError());
-        if (success) {
-            setSuccess(null);
-        }
+        if (success) setSuccess(null);
     };
 
     return (

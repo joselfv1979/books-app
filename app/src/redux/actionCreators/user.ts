@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import { ActionType, UserAction } from '../actionTypes/user';
 import { getAllUsers, createUser, removeUser, updateUser } from '../../services/users';
 import { IUser } from '../../types/User';
+import { validateUser } from '../../utils/validateUser';
 
 export const getUsers = () => {
     return async (dispatch: Dispatch<UserAction>) => {
@@ -26,6 +27,16 @@ export const getUsers = () => {
 
 export const addUser = (user: IUser) => {
     return async (dispatch: Dispatch<UserAction>) => {
+        const validUser = validateUser(user);
+
+        if (!validUser.success) {
+            dispatch({
+                type: ActionType.ADD_USER_FAIL,
+                payload: validUser.message,
+            });
+            return;
+        }
+
         const res = await createUser(user);
 
         if (res.success) {
@@ -33,14 +44,14 @@ export const addUser = (user: IUser) => {
                 type: ActionType.ADD_USER_SUCCESS,
                 payload: user,
             });
-            return true;
         } else {
             dispatch({
                 type: ActionType.ADD_USER_FAIL,
                 payload: res.message,
             });
-            return false;
         }
+        console.log('res.success: ', res.success);
+        return res.success;
     };
 };
 

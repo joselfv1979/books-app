@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { IUser } from '../types/User';
-import User from './User';
+import UserCard from './UserCard';
 
 type Props = {
     users: Array<IUser>;
@@ -15,7 +15,7 @@ const UserList = ({ users }: Props) => {
                     users.map((user, i) => {
                         return (
                             <Col key={i} sm={4}>
-                                <User user={user} />
+                                <UserCard user={user} />
                             </Col>
                         );
                     })
