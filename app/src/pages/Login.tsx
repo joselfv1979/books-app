@@ -11,29 +11,30 @@ import Message from '../components/Message';
 const Login = () => {
     const { setUser } = useUserContext();
 
-    const [fail, setFail] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     const navigate = useNavigate();
 
     const login = async (userData: Auth) => {
         const res = await loginUser(userData);
+
         if (res.success) {
             setUser(res.value);
             localStorage.setItem('user', JSON.stringify(res.value));
             navigate('/books');
         } else {
-            setFail(res.message);
+            setError(res.message);
         }
     };
 
     const cancelMessage = () => {
-        setFail(null);
+        setError(null);
     };
 
     return (
         <>
             <Container className={styles.loginContainer}>
-                {fail && <Message fail={fail} cancelMessage={cancelMessage} />}
+                {error && <Message error={error} cancelMessage={cancelMessage} />}
                 <LoginForm login={login} />
             </Container>
         </>

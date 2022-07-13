@@ -6,8 +6,15 @@ import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../hooks/useTypeSelector';
 import { Container } from 'react-bootstrap';
 import Message from '../components/Message';
+import { useUserContext } from '../context/user/UserContext';
+import { getHeaders } from '../utils/authHeader';
 
 const Books = () => {
+    const { user } = useUserContext();
+
+    console.log('user-logged: ', user);
+    const token = getHeaders();
+    console.log('login-token: ', token);
     const dispatch = useDispatch();
 
     const { books, status, error } = useTypedSelector((state) => state.books);
@@ -37,7 +44,7 @@ const Books = () => {
 
     return (
         <Container>
-            {message && <Message fail={error} success={success} cancelMessage={cancelMessage} />}
+            {message && <Message error={error} success={success} cancelMessage={cancelMessage} />}
             {books && <BookList books={books} removeBook={removeBook} />}
         </Container>
     );

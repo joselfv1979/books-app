@@ -13,24 +13,24 @@ const Book = () => {
     const navigate = useNavigate();
 
     const [book, setBook] = useState<IBook>();
-    const [fail, setFail] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchBook = async () => {
             const res = await getBook(String(id));
 
-            res.success ? setBook(res.value) : setFail(res.message);
+            res.success ? setBook(res.value) : setError(res.message);
         };
         fetchBook();
     }, [id]);
 
     const cancelMessage = () => {
-        setFail(null);
+        setError(null);
     };
 
     return (
         <Container>
-            {fail && <Message fail={fail} cancelMessage={cancelMessage} />}
+            {error && <Message error={error} cancelMessage={cancelMessage} />}
             <Breadcrumb.Item href="#">
                 <ArrowLeftSquareFill size={26} onClick={() => navigate('/books')} />
             </Breadcrumb.Item>

@@ -26,13 +26,13 @@ const User = () => {
         roles: ['user'],
     };
 
-    const [values, setValues] = useState(initialState);
+    const [values, setValues] = useState<IUser>(initialState);
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [event.target.name]: event.target.value });
     };
 
-    async function submitCallback(event: FormEvent<HTMLFormElement>) {
+    async function submit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         saveUser();
     }
@@ -56,8 +56,8 @@ const User = () => {
 
     return (
         <>
-            {message && <Message fail={error} success={success} cancelMessage={cancelMessage} />}
-            <Form className={styles.userForm} onSubmit={submitCallback} data-testid="user-form">
+            {message && <Message error={error} success={success} cancelMessage={cancelMessage} />}
+            <Form className={styles.userForm} onSubmit={submit} data-testid="user-form">
                 <h1>Register</h1>
                 <Form.Group as={Row} className="mb-3" controlId="formBasicFullname">
                     <Form.Label column sm={3}>

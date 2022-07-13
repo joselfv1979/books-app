@@ -50,7 +50,6 @@ export const addUser = (user: IUser) => {
                 payload: res.message,
             });
         }
-        console.log('res.success: ', res.success);
         return res.success;
     };
 };

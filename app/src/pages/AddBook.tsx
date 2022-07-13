@@ -6,6 +6,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import styles from './../scss/bookForm.module.scss';
 import Message from '../components/Message';
 import { useTypedSelector } from '../hooks/useTypeSelector';
+import BookForm from '../components/BookForm';
 
 const AddBook = () => {
     const { error } = useTypedSelector((state) => state.books);
@@ -14,31 +15,21 @@ const AddBook = () => {
 
     const dispatch = useDispatch();
 
-    const initialState: IBook = {
-        id: '',
-        title: '',
-        author: '',
-        price: 0,
-        pages: 0,
-    };
-
-    const [values, setValues] = useState(initialState);
-
-    const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    /* const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [event.target.name]: event.target.value });
     };
 
     const submit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         saveBook();
-    };
+    }; */
 
-    const saveBook = async () => {
-        if (await dispatch(addBook(values))) {
+    const saveBook = async (book: IBook) => {
+        if (await dispatch(addBook(book))) {
             setSuccess('Book created successfully');
             setTimeout(() => {
                 setSuccess(null);
-                setValues(initialState);
+                /* setValues(initialState); */
             }, 2000);
         }
     };
@@ -50,8 +41,9 @@ const AddBook = () => {
 
     return (
         <>
-            {message && <Message fail={error} success={success} cancelMessage={cancelMessage} />}
-            <Form className={styles.bookForm} onSubmit={submit}>
+            {message && <Message error={error} success={success} cancelMessage={cancelMessage} />}
+            <BookForm saveBook={saveBook} />
+            {/* <Form className={styles.bookForm} onSubmit={submit}>
                 <h1>New Book</h1>
                 <Form.Group as={Row} className="mb-4" controlId="formBasicFullName">
                     <Form.Label column sm={2}>
@@ -118,7 +110,7 @@ const AddBook = () => {
                         Submit
                     </Button>
                 </Form.Group>
-            </Form>
+            </Form> */}
         </>
     );
 };

@@ -2,13 +2,13 @@ import React from 'react';
 import { Alert } from 'react-bootstrap';
 
 type Props = {
-    fail: string | null;
+    error: string | null;
     success?: string | null;
     cancelMessage: () => void;
 };
 
-const Message = ({ fail, success, cancelMessage }: Props) => {
-    const variant = fail ? 'danger' : 'success';
+const Message = ({ error, success, cancelMessage }: Props) => {
+    const variant = error ? 'danger' : 'success';
 
     return (
         <Alert
@@ -21,7 +21,7 @@ const Message = ({ fail, success, cancelMessage }: Props) => {
             onClose={cancelMessage}
             dismissible
         >
-            {fail || success}
+            {error || success}
         </Alert>
     );
 };

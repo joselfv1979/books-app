@@ -66,7 +66,7 @@ const BookEdit = () => {
 
     return (
         <>
-            {message && <Message fail={error} success={success} cancelMessage={cancelMessage} />}
+            {message && <Message error={error} success={success} cancelMessage={cancelMessage} />}
             <Form className={styles.bookForm} onSubmit={submit}>
                 <h1>Edit Book</h1>
                 <Form.Group as={Row} className="mb-4" controlId="formBasicFullName">
